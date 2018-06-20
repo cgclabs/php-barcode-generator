@@ -16,7 +16,7 @@ class BarcodeGeneratorSVG extends BarcodeGenerator
      * @return string SVG code.
      * @public
      */
-    public function getBarcode($code, $type, $widthFactor = 2, $totalHeight = 30, $color = 'black')
+    public function getBarcode($code, $type, $widthFactor = 2, $totalHeight = 30, $color = 'black', $paddingHorz = 0, $paddingVert = 0, $footerSize = 0, $footerFontSize = 25)
     {
         $barcodeData = $this->getBarcodeData($code, $type);
 
@@ -25,23 +25,27 @@ class BarcodeGeneratorSVG extends BarcodeGenerator
 
         $svg = '<?xml version="1.0" standalone="no" ?>' . "\n";
         $svg .= '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' . "\n";
-        $svg .= '<svg width="' . round(($barcodeData['maxWidth'] * $widthFactor),
-                3) . '" height="' . $totalHeight . '" version="1.1" xmlns="http://www.w3.org/2000/svg">' . "\n";
+        $svg .= '<svg width="' . round(($barcodeData['maxWidth'] * $widthFactor) + ($paddingHorz * 2), 3) . '" height="' . ($totalHeight + $footerSize + ($paddingVert * 2)) . '" version="1.1" xmlns="http://www.w3.org/2000/svg">' . "\n";
         $svg .= "\t" . '<desc>' . strtr($barcodeData['code'], $repstr) . '</desc>' . "\n";
         $svg .= "\t" . '<g id="bars" fill="' . $color . '" stroke="none">' . "\n";
         // print bars
-        $positionHorizontal = 0;
+        $positionHorizontal = $paddingHorz;
         foreach ($barcodeData['bars'] as $bar) {
             $barWidth = round(($bar['width'] * $widthFactor), 3);
             $barHeight = round(($bar['height'] * $totalHeight / $barcodeData['maxHeight']), 3);
             if ($bar['drawBar']) {
-                $positionVertical = round(($bar['positionVertical'] * $totalHeight / $barcodeData['maxHeight']), 3);
+                $positionVertical = round(($bar['positionVertical'] * $totalHeight / $barcodeData['maxHeight']), 3) + $paddingVert;
                 // draw a vertical bar
                 $svg .= "\t\t" . '<rect x="' . $positionHorizontal . '" y="' . $positionVertical . '" width="' . $barWidth . '" height="' . $barHeight . '" />' . "\n";
             }
             $positionHorizontal += $barWidth;
         }
-        $svg .= "\t" . '</g>' . "\n";
+        if ($footerSize > 0) {
+            $footer = '<text style="font-size:'.$footerFontSize.'px;" text-anchor="middle" x="'.(($positionHorizontal + $paddingHorz)/2).'" y="'.($totalHeight + $footerSize + $paddingVert).'">'.$code.'</text>';
+        } else {
+            $footer = '';
+        }
+        $svg .= "\t" . $footer . '</g>' . "\n";
         $svg .= '</svg>' . "\n";
 
         return $svg;

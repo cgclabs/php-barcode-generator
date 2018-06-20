@@ -38,36 +38,6 @@ use Picqer\Barcode\Exceptions\UnknownTypeException;
 
 abstract class BarcodeGenerator
 {
-    const TYPE_CODE_39 = 'C39';
-    const TYPE_CODE_39_CHECKSUM = 'C39+';
-    const TYPE_CODE_39E = 'C39E';
-    const TYPE_CODE_39E_CHECKSUM = 'C39E+';
-    const TYPE_CODE_93 = 'C93';
-    const TYPE_STANDARD_2_5 = 'S25';
-    const TYPE_STANDARD_2_5_CHECKSUM = 'S25+';
-    const TYPE_INTERLEAVED_2_5 = 'I25';
-    const TYPE_INTERLEAVED_2_5_CHECKSUM = 'I25+';
-    const TYPE_CODE_128 = 'C128';
-    const TYPE_CODE_128_A = 'C128A';
-    const TYPE_CODE_128_B = 'C128B';
-    const TYPE_CODE_128_C = 'C128C';
-    const TYPE_EAN_2 = 'EAN2';
-    const TYPE_EAN_5 = 'EAN5';
-    const TYPE_EAN_8 = 'EAN8';
-    const TYPE_EAN_13 = 'EAN13';
-    const TYPE_UPC_A = 'UPCA';
-    const TYPE_UPC_E = 'UPCE';
-    const TYPE_MSI = 'MSI';
-    const TYPE_MSI_CHECKSUM = 'MSI+';
-    const TYPE_POSTNET = 'POSTNET';
-    const TYPE_PLANET = 'PLANET';
-    const TYPE_RMS4CC = 'RMS4CC';
-    const TYPE_KIX = 'KIX';
-    const TYPE_IMB = 'IMB';
-    const TYPE_CODABAR = 'CODABAR';
-    const TYPE_CODE_11 = 'CODE11';
-    const TYPE_PHARMA_CODE = 'PHARMA';
-    const TYPE_PHARMA_CODE_TWO_TRACKS = 'PHARMA2T';
 
     /**
      * Get the barcode data
@@ -80,133 +50,102 @@ abstract class BarcodeGenerator
     protected function getBarcodeData($code, $type)
     {
         switch (strtoupper($type)) {
-            case self::TYPE_CODE_39: { // CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
+            case 'CODE_39': // CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
                 $arrcode = $this->barcode_code39($code, false, false);
                 break;
-            }
-            case self::TYPE_CODE_39_CHECKSUM: { // CODE 39 with checksum
+            case 'CODE_39_CHECKSUM': // CODE 39 with checksum
                 $arrcode = $this->barcode_code39($code, false, true);
                 break;
-            }
-            case self::TYPE_CODE_39E: { // CODE 39 EXTENDED
+            case 'CODE_39E': // CODE 39 EXTENDED
                 $arrcode = $this->barcode_code39($code, true, false);
                 break;
-            }
-            case self::TYPE_CODE_39E_CHECKSUM: { // CODE 39 EXTENDED + CHECKSUM
+            case 'CODE_39E_CHECKSUM': // CODE 39 EXTENDED + CHECKSUM
                 $arrcode = $this->barcode_code39($code, true, true);
                 break;
-            }
-            case self::TYPE_CODE_93: { // CODE 93 - USS-93
+            case 'CODE_93': // CODE 93 - USS-93
                 $arrcode = $this->barcode_code93($code);
                 break;
-            }
-            case self::TYPE_STANDARD_2_5: { // Standard 2 of 5
+            case 'STANDARD_2_5': // Standard 2 of 5
                 $arrcode = $this->barcode_s25($code, false);
                 break;
-            }
-            case self::TYPE_STANDARD_2_5_CHECKSUM: { // Standard 2 of 5 + CHECKSUM
+            case 'STANDARD_2_5_CHECKSUM': // Standard 2 of 5 + CHECKSUM
                 $arrcode = $this->barcode_s25($code, true);
                 break;
-            }
-            case self::TYPE_INTERLEAVED_2_5: { // Interleaved 2 of 5
+            case 'INTERLEAVED_2_5': // Interleaved 2 of 5
                 $arrcode = $this->barcode_i25($code, false);
                 break;
-            }
-            case self::TYPE_INTERLEAVED_2_5_CHECKSUM: { // Interleaved 2 of 5 + CHECKSUM
+            case 'INTERLEAVED_2_5_CHECKSUM': // Interleaved 2 of 5 + CHECKSUM
                 $arrcode = $this->barcode_i25($code, true);
                 break;
-            }
-            case self::TYPE_CODE_128: { // CODE 128
+            case 'CODE_128': // CODE 128
                 $arrcode = $this->barcode_c128($code, '');
                 break;
-            }
-            case self::TYPE_CODE_128_A: { // CODE 128 A
+            case 'CODE_128_A': // CODE 128 A
                 $arrcode = $this->barcode_c128($code, 'A');
                 break;
-            }
-            case self::TYPE_CODE_128_B: { // CODE 128 B
+            case 'CODE_128_B': // CODE 128 B
                 $arrcode = $this->barcode_c128($code, 'B');
                 break;
-            }
-            case self::TYPE_CODE_128_C: { // CODE 128 C
+            case 'CODE_128_C': // CODE 128 C
                 $arrcode = $this->barcode_c128($code, 'C');
                 break;
-            }
-            case self::TYPE_EAN_2: { // 2-Digits UPC-Based Extention
+            case 'EAN_2': // 2-Digits UPC-Based Extention
                 $arrcode = $this->barcode_eanext($code, 2);
                 break;
-            }
-            case self::TYPE_EAN_5: { // 5-Digits UPC-Based Extention
+            case 'EAN_5': // 5-Digits UPC-Based Extention
                 $arrcode = $this->barcode_eanext($code, 5);
                 break;
-            }
-            case self::TYPE_EAN_8: { // EAN 8
+            case 'EAN_8': // EAN 8
                 $arrcode = $this->barcode_eanupc($code, 8);
                 break;
-            }
-            case self::TYPE_EAN_13: { // EAN 13
+            case 'EAN_13': // EAN 13
                 $arrcode = $this->barcode_eanupc($code, 13);
                 break;
-            }
-            case self::TYPE_UPC_A: { // UPC-A
+            case 'UPC_A': // UPC-A
                 $arrcode = $this->barcode_eanupc($code, 12);
                 break;
-            }
-            case self::TYPE_UPC_E: { // UPC-E
+            case 'UPC_E': // UPC-E
                 $arrcode = $this->barcode_eanupc($code, 6);
                 break;
-            }
-            case self::TYPE_MSI: { // MSI (Variation of Plessey code)
+            case 'MSI': // MSI (Variation of Plessey code)
                 $arrcode = $this->barcode_msi($code, false);
                 break;
-            }
-            case self::TYPE_MSI_CHECKSUM: { // MSI + CHECKSUM (modulo 11)
+            case 'MSI_CHECKSUM': // MSI + CHECKSUM (modulo 11)
                 $arrcode = $this->barcode_msi($code, true);
                 break;
-            }
-            case self::TYPE_POSTNET: { // POSTNET
+            case 'POSTNET': // POSTNET
                 $arrcode = $this->barcode_postnet($code, false);
                 break;
-            }
-            case self::TYPE_PLANET: { // PLANET
+            case 'PLANET': // PLANET
                 $arrcode = $this->barcode_postnet($code, true);
                 break;
-            }
-            case self::TYPE_RMS4CC: { // RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)
+            case 'RMS4CC': // RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)
                 $arrcode = $this->barcode_rms4cc($code, false);
                 break;
-            }
-            case self::TYPE_KIX: { // KIX (Klant index - Customer index)
+            case 'KIX': // KIX (Klant index - Customer index)
                 $arrcode = $this->barcode_rms4cc($code, true);
                 break;
-            }
-            case self::TYPE_IMB: { // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
+            case 'IMB': // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
                 $arrcode = $this->barcode_imb($code);
                 break;
-            }
-            case self::TYPE_CODABAR: { // CODABAR
+            case 'CODABAR': // CODABAR
                 $arrcode = $this->barcode_codabar($code);
                 break;
-            }
-            case self::TYPE_CODE_11: { // CODE 11
+            case 'CODE_11': // CODE 11
                 $arrcode = $this->barcode_code11($code);
                 break;
-            }
-            case self::TYPE_PHARMA_CODE: { // PHARMACODE
+            case 'PHARMA_CODE': // PHARMACODE
                 $arrcode = $this->barcode_pharmacode($code);
                 break;
-            }
-            case self::TYPE_PHARMA_CODE_TWO_TRACKS: { // PHARMACODE TWO-TRACKS
+            case 'PHARMA_CODE_TWO_TRACKS': // PHARMACODE TWO-TRACKS
                 $arrcode = $this->barcode_pharmacode2t($code);
                 break;
-            }
-            default: {
+            default:
                 throw new UnknownTypeException();
                 break;
-            }
         }
 
-        if ( ! isset($arrcode['maxWidth'])) {
+        if (! isset($arrcode['maxWidth'])) {
             $arrcode = $this->convertBarcodeArrayToNewStyle($arrcode);
         }
 
@@ -291,7 +230,7 @@ abstract class BarcodeGenerator
         $clen = strlen($code);
         for ($i = 0; $i < $clen; ++$i) {
             $char = $code{$i};
-            if ( ! isset($chr[$char])) {
+            if (! isset($chr[$char])) {
                 throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
             }
             for ($j = 0; $j < 9; ++$j) {
@@ -737,7 +676,7 @@ abstract class BarcodeGenerator
         $clen = strlen($code);
         for ($i = 0; $i < $clen; ++$i) {
             $char = ord($code{$i});
-            if ( ! isset($chr[$char])) {
+            if (! isset($chr[$char])) {
                 throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
             }
             for ($j = 0; $j < 6; ++$j) {
@@ -929,7 +868,7 @@ abstract class BarcodeGenerator
         $clen = strlen($code);
         for ($i = 0; $i < $clen; ++$i) {
             $digit = $code{$i};
-            if ( ! isset($chr[$digit])) {
+            if (! isset($chr[$digit])) {
                 throw new InvalidCharacterException('Char ' . $digit . ' is unsupported');
             }
             $seq .= $chr[$digit];
@@ -974,7 +913,7 @@ abstract class BarcodeGenerator
         $clen = strlen($code);
         for ($i = 0; $i < $clen; ++$i) {
             $digit = $code{$i};
-            if ( ! isset($chr[$digit])) {
+            if (! isset($chr[$digit])) {
                 throw new InvalidCharacterException('Char ' . $digit . ' is unsupported');
             }
             $seq .= $chr[$digit];
@@ -1001,7 +940,7 @@ abstract class BarcodeGenerator
         $k = 0;
         for ($i = 0; $i < $len; ++$i) {
             $w += 1;
-            if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq{$i} != $seq{($i + 1)}))) {
+            if (($i == ($len - 1)) or (($i < ($len - 1)) and ($seq{$i} != $seq{($i + 1)}))) {
                 if ($seq{$i} == '1') {
                     $t = true; // bar
                 } else {
@@ -1058,7 +997,7 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $clen; $i = ($i + 2)) {
             $char_bar = $code{$i};
             $char_space = $code{$i + 1};
-            if ( ! isset($chr[$char_bar]) || ! isset($chr[$char_space])) {
+            if (! isset($chr[$char_bar]) || ! isset($chr[$char_space])) {
                 throw new InvalidCharacterException();
             }
             // create a bar-space sequence
@@ -1221,37 +1160,35 @@ abstract class BarcodeGenerator
         // length of the code
         $len = strlen($code);
         switch (strtoupper($type)) {
-            case 'A': { // MODE A
+            case 'A': // MODE A
                 $startid = 103;
                 for ($i = 0; $i < $len; ++$i) {
                     $char = $code{$i};
                     $char_id = ord($char);
-                    if (($char_id >= 241) AND ($char_id <= 244)) {
+                    if (($char_id >= 241) and ($char_id <= 244)) {
                         $code_data[] = $fnc_a[$char_id];
-                    } elseif (($char_id >= 0) AND ($char_id <= 95)) {
+                    } elseif (($char_id >= 0) and ($char_id <= 95)) {
                         $code_data[] = strpos($keys_a, $char);
                     } else {
                         throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
                     }
                 }
                 break;
-            }
-            case 'B': { // MODE B
+            case 'B': // MODE B
                 $startid = 104;
                 for ($i = 0; $i < $len; ++$i) {
                     $char = $code{$i};
                     $char_id = ord($char);
-                    if (($char_id >= 241) AND ($char_id <= 244)) {
+                    if (($char_id >= 241) and ($char_id <= 244)) {
                         $code_data[] = $fnc_b[$char_id];
-                    } elseif (($char_id >= 32) AND ($char_id <= 127)) {
+                    } elseif (($char_id >= 32) and ($char_id <= 127)) {
                         $code_data[] = strpos($keys_b, $char);
                     } else {
                         throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
                     }
                 }
                 break;
-            }
-            case 'C': { // MODE C
+            case 'C': // MODE C
                 $startid = 105;
                 if (ord($code[0]) == 241) {
                     $code_data[] = 102;
@@ -1270,21 +1207,22 @@ abstract class BarcodeGenerator
                     }
                 }
                 break;
-            }
-            default: { // MODE AUTO
+            default: // MODE AUTO
                 // split code into sequences
                 $sequence = array();
                 // get numeric sequences (if any)
                 $numseq = array();
                 preg_match_all('/([0-9]{4,})/', $code, $numseq, PREG_OFFSET_CAPTURE);
-                if (isset($numseq[1]) AND ! empty($numseq[1])) {
+                if (isset($numseq[1]) and ! empty($numseq[1])) {
                     $end_offset = 0;
                     foreach ($numseq[1] as $val) {
                         $offset = $val[1];
                         if ($offset > $end_offset) {
                             // non numeric sequence
-                            $sequence = array_merge($sequence,
-                                $this->get128ABsequence(substr($code, $end_offset, ($offset - $end_offset))));
+                            $sequence = array_merge(
+                                $sequence,
+                                $this->get128ABsequence(substr($code, $end_offset, ($offset - $end_offset)))
+                            );
                         }
                         // numeric sequence
                         $slen = strlen($val[0]);
@@ -1305,74 +1243,70 @@ abstract class BarcodeGenerator
                 // process the sequence
                 foreach ($sequence as $key => $seq) {
                     switch ($seq[0]) {
-                        case 'A': {
+                        case 'A':
                             if ($key == 0) {
                                 $startid = 103;
                             } elseif ($sequence[($key - 1)][0] != 'A') {
-                                if (($seq[2] == 1) AND ($key > 0) AND ($sequence[($key - 1)][0] == 'B') AND ( ! isset($sequence[($key - 1)][3]))) {
+                                if (($seq[2] == 1) and ($key > 0) and ($sequence[($key - 1)][0] == 'B') and (! isset($sequence[($key - 1)][3]))) {
                                     // single character shift
                                     $code_data[] = 98;
                                     // mark shift
                                     $sequence[$key][3] = true;
-                                } elseif ( ! isset($sequence[($key - 1)][3])) {
+                                } elseif (! isset($sequence[($key - 1)][3])) {
                                     $code_data[] = 101;
                                 }
                             }
                             for ($i = 0; $i < $seq[2]; ++$i) {
                                 $char = $seq[1]{$i};
                                 $char_id = ord($char);
-                                if (($char_id >= 241) AND ($char_id <= 244)) {
+                                if (($char_id >= 241) and ($char_id <= 244)) {
                                     $code_data[] = $fnc_a[$char_id];
                                 } else {
                                     $code_data[] = strpos($keys_a, $char);
                                 }
                             }
                             break;
-                        }
-                        case 'B': {
+                        case 'B':
                             if ($key == 0) {
                                 $tmpchr = ord($seq[1][0]);
-                                if (($seq[2] == 1) AND ($tmpchr >= 241) AND ($tmpchr <= 244) AND isset($sequence[($key + 1)]) AND ($sequence[($key + 1)][0] != 'B')) {
+                                if (($seq[2] == 1) and ($tmpchr >= 241) and ($tmpchr <= 244) and isset($sequence[($key + 1)]) and ($sequence[($key + 1)][0] != 'B')) {
                                     switch ($sequence[($key + 1)][0]) {
-                                        case 'A': {
+                                        case 'A':
                                             $startid = 103;
                                             $sequence[$key][0] = 'A';
                                             $code_data[] = $fnc_a[$tmpchr];
                                             break;
-                                        }
-                                        case 'C': {
+                                        case 'C':
                                             $startid = 105;
                                             $sequence[$key][0] = 'C';
                                             $code_data[] = $fnc_a[$tmpchr];
                                             break;
-                                        }
                                     }
                                     break;
                                 } else {
                                     $startid = 104;
                                 }
                             } elseif ($sequence[($key - 1)][0] != 'B') {
-                                if (($seq[2] == 1) AND ($key > 0) AND ($sequence[($key - 1)][0] == 'A') AND ( ! isset($sequence[($key - 1)][3]))) {
+                                if (($seq[2] == 1) and ($key > 0) and ($sequence[($key - 1)][0] == 'A') and (! isset($sequence[($key - 1)][3]))) {
                                     // single character shift
                                     $code_data[] = 98;
                                     // mark shift
                                     $sequence[$key][3] = true;
-                                } elseif ( ! isset($sequence[($key - 1)][3])) {
+                                } elseif (! isset($sequence[($key - 1)][3])) {
                                     $code_data[] = 100;
                                 }
                             }
                             for ($i = 0; $i < $seq[2]; ++$i) {
                                 $char = $seq[1]{$i};
                                 $char_id = ord($char);
-                                if (($char_id >= 241) AND ($char_id <= 244)) {
+                                if (($char_id >= 241) and ($char_id <= 244)) {
                                     $code_data[] = $fnc_b[$char_id];
                                 } else {
                                     $code_data[] = strpos($keys_b, $char);
                                 }
                             }
                             break;
-                        }
-                        case 'C': {
+                        case 'C':
                             if ($key == 0) {
                                 $startid = 105;
                             } elseif ($sequence[($key - 1)][0] != 'C') {
@@ -1383,10 +1317,8 @@ abstract class BarcodeGenerator
                                 $code_data[] = intval($chrnum);
                             }
                             break;
-                        }
                     }
                 }
-            }
         }
         // calculate check character
         $sum = $startid;
@@ -1433,7 +1365,7 @@ abstract class BarcodeGenerator
         // get A sequences (if any)
         $numseq = array();
         preg_match_all('/([\x00-\x1f])/', $code, $numseq, PREG_OFFSET_CAPTURE);
-        if (isset($numseq[1]) AND ! empty($numseq[1])) {
+        if (isset($numseq[1]) and ! empty($numseq[1])) {
             $end_offset = 0;
             foreach ($numseq[1] as $val) {
                 $offset = $val[1];
@@ -1493,7 +1425,11 @@ abstract class BarcodeGenerator
         }
         $sum_b = 0;
         for ($i = 0; $i < $data_len; $i += 2) {
-            $sum_b += ($code{$i});
+            if (is_numeric($code{$i})) {
+                $sum_b += ($code{$i});
+            } else {
+                throw new InvalidCharacterException();
+            }
         }
         if ($len < 13) {
             $sum_b *= 3;
@@ -1516,7 +1452,7 @@ abstract class BarcodeGenerator
         if ($upce) {
             // convert UPC-A to UPC-E
             $tmp = substr($code, 4, 3);
-            if (($tmp == '000') OR ($tmp == '100') OR ($tmp == '200')) {
+            if (($tmp == '000') or ($tmp == '100') or ($tmp == '200')) {
                 // manufacturer code ends in 000, 100, or 200
                 $upce_code = substr($code, 2, 2) . substr($code, 9, 3) . substr($code, 4, 1);
             } else {
@@ -1636,7 +1572,7 @@ abstract class BarcodeGenerator
             }
             $seq .= '01010'; // center guard bar
             for ($i = $half_len; $i < $len; ++$i) {
-                if ( ! isset($codes['C'][$code{$i}])) {
+                if (! isset($codes['C'][$code{$i}])) {
                     throw new InvalidCharacterException('Char ' . $code{$i} . ' not allowed');
                 }
                 $seq .= $codes['C'][$code{$i}];
@@ -1647,7 +1583,7 @@ abstract class BarcodeGenerator
         $w = 0;
         for ($i = 0; $i < $clen; ++$i) {
             $w += 1;
-            if (($i == ($clen - 1)) OR (($i < ($clen - 1)) AND ($seq{$i} != $seq{($i + 1)}))) {
+            if (($i == ($clen - 1)) or (($i < ($clen - 1)) and ($seq{$i} != $seq{($i + 1)}))) {
                 if ($seq{$i} == '1') {
                     $t = true; // bar
                 } else {
@@ -1758,30 +1694,30 @@ abstract class BarcodeGenerator
     {
         // bar length
         if ($planet) {
-            $barlen = Array(
-                0 => Array(1, 1, 2, 2, 2),
-                1 => Array(2, 2, 2, 1, 1),
-                2 => Array(2, 2, 1, 2, 1),
-                3 => Array(2, 2, 1, 1, 2),
-                4 => Array(2, 1, 2, 2, 1),
-                5 => Array(2, 1, 2, 1, 2),
-                6 => Array(2, 1, 1, 2, 2),
-                7 => Array(1, 2, 2, 2, 1),
-                8 => Array(1, 2, 2, 1, 2),
-                9 => Array(1, 2, 1, 2, 2)
+            $barlen = array(
+                0 => array(1, 1, 2, 2, 2),
+                1 => array(2, 2, 2, 1, 1),
+                2 => array(2, 2, 1, 2, 1),
+                3 => array(2, 2, 1, 1, 2),
+                4 => array(2, 1, 2, 2, 1),
+                5 => array(2, 1, 2, 1, 2),
+                6 => array(2, 1, 1, 2, 2),
+                7 => array(1, 2, 2, 2, 1),
+                8 => array(1, 2, 2, 1, 2),
+                9 => array(1, 2, 1, 2, 2)
             );
         } else {
-            $barlen = Array(
-                0 => Array(2, 2, 1, 1, 1),
-                1 => Array(1, 1, 1, 2, 2),
-                2 => Array(1, 1, 2, 1, 2),
-                3 => Array(1, 1, 2, 2, 1),
-                4 => Array(1, 2, 1, 1, 2),
-                5 => Array(1, 2, 1, 2, 1),
-                6 => Array(1, 2, 2, 1, 1),
-                7 => Array(2, 1, 1, 1, 2),
-                8 => Array(2, 1, 1, 2, 1),
-                9 => Array(2, 1, 2, 1, 1)
+            $barlen = array(
+                0 => array(2, 2, 1, 1, 1),
+                1 => array(1, 1, 1, 2, 2),
+                2 => array(1, 1, 2, 1, 2),
+                3 => array(1, 1, 2, 2, 1),
+                4 => array(1, 2, 1, 1, 2),
+                5 => array(1, 2, 1, 2, 1),
+                6 => array(1, 2, 2, 1, 1),
+                7 => array(2, 1, 1, 1, 2),
+                8 => array(2, 1, 1, 2, 1),
+                9 => array(2, 1, 2, 1, 1)
             );
         }
         $bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 2, 'bcode' => array());
@@ -1942,26 +1878,22 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $len; ++$i) {
             for ($j = 0; $j < 4; ++$j) {
                 switch ($barmode[$code{$i}][$j]) {
-                    case 1: {
+                    case 1:
                         $p = 0;
                         $h = 2;
                         break;
-                    }
-                    case 2: {
+                    case 2:
                         $p = 0;
                         $h = 3;
                         break;
-                    }
-                    case 3: {
+                    case 3:
                         $p = 1;
                         $h = 1;
                         break;
-                    }
-                    case 4: {
+                    case 4:
                         $p = 1;
                         $h = 2;
                         break;
-                    }
                 }
                 $bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => $h, 'p' => $p);
                 $bararray['bcode'][$k++] = array('t' => 0, 'w' => 1, 'h' => 2, 'p' => 0);
@@ -2016,7 +1948,7 @@ abstract class BarcodeGenerator
         $code = 'A' . strtoupper($code) . 'A';
         $len = strlen($code);
         for ($i = 0; $i < $len; ++$i) {
-            if ( ! isset($chr[$code{$i}])) {
+            if (! isset($chr[$code{$i}])) {
                 throw new InvalidCharacterException('Char ' . $code{$i} . ' is unsupported');
             }
             $seq = $chr[$code{$i}];
@@ -2110,7 +2042,7 @@ abstract class BarcodeGenerator
         $code = 'S' . $code . 'S';
         $len += 3;
         for ($i = 0; $i < $len; ++$i) {
-            if ( ! isset($chr[$code{$i}])) {
+            if (! isset($chr[$code{$i}])) {
                 throw new InvalidCharacterException('Char ' . $code{$i} . ' is unsupported');
             }
             $seq = $chr[$code{$i}];
@@ -2173,21 +2105,18 @@ abstract class BarcodeGenerator
         $code = intval($code);
         do {
             switch ($code % 3) {
-                case 0: {
+                case 0:
                     $seq .= '3';
                     $code = ($code - 3) / 3;
                     break;
-                }
-                case 1: {
+                case 1:
                     $seq .= '1';
                     $code = ($code - 1) / 3;
                     break;
-                }
-                case 2: {
+                case 2:
                     $seq .= '2';
                     $code = ($code - 2) / 3;
                     break;
-                }
             }
         } while ($code != 0);
         $seq = strrev($seq);
@@ -2196,21 +2125,18 @@ abstract class BarcodeGenerator
         $len = strlen($seq);
         for ($i = 0; $i < $len; ++$i) {
             switch ($seq{$i}) {
-                case '1': {
+                case '1':
                     $p = 1;
                     $h = 1;
                     break;
-                }
-                case '2': {
+                case '2':
                     $p = 0;
                     $h = 1;
                     break;
-                }
-                case '3': {
+                case '3':
                     $p = 0;
                     $h = 2;
                     break;
-                }
             }
             $bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => $h, 'p' => $p);
             $bararray['bcode'][$k++] = array('t' => 0, 'w' => 1, 'h' => 2, 'p' => 0);
@@ -2528,26 +2454,21 @@ abstract class BarcodeGenerator
         }
         // Conversion of Routing Code
         switch (strlen($routing_code)) {
-            case 0: {
+            case 0:
                 $binary_code = 0;
                 break;
-            }
-            case 5: {
+            case 5:
                 $binary_code = bcadd($routing_code, '1');
                 break;
-            }
-            case 9: {
+            case 9:
                 $binary_code = bcadd($routing_code, '100001');
                 break;
-            }
-            case 11: {
+            case 11:
                 $binary_code = bcadd($routing_code, '1000100001');
                 break;
-            }
-            default: {
+            default:
                 throw new BarcodeException('Routing code unknown');
                 break;
-            }
         }
         $binary_code = bcmul($binary_code, 10);
         $binary_code = bcadd($binary_code, $tracking_number[0]);
@@ -2606,7 +2527,7 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < 65; ++$i) {
             $asc = (($characters[$asc_chr[$i]] & pow(2, $asc_pos[$i])) > 0);
             $dsc = (($characters[$dsc_chr[$i]] & pow(2, $dsc_pos[$i])) > 0);
-            if ($asc AND $dsc) {
+            if ($asc and $dsc) {
                 // full bar (F)
                 $p = 0;
                 $h = 3;
@@ -2642,7 +2563,7 @@ abstract class BarcodeGenerator
      */
     protected function barcode_imb_pre($code)
     {
-        if ( ! preg_match('/^[fadtFADT]{65}$/', $code) == 1) {
+        if (! preg_match('/^[fadtFADT]{65}$/', $code) == 1) {
             throw new InvalidFormatException();
         }
         $characters = str_split(strtolower($code), 1);
@@ -2651,30 +2572,26 @@ abstract class BarcodeGenerator
         $bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 3, 'bcode' => array());
         for ($i = 0; $i < 65; ++$i) {
             switch ($characters[$i]) {
-                case 'f': {
+                case 'f':
                     // full bar
                     $p = 0;
                     $h = 3;
                     break;
-                }
-                case 'a': {
+                case 'a':
                     // ascender
                     $p = 0;
                     $h = 2;
                     break;
-                }
-                case 'd': {
+                case 'd':
                     // descender
                     $p = 1;
                     $h = 2;
                     break;
-                }
-                case 't': {
+                case 't':
                     // tracker (short)
                     $p = 1;
                     $h = 1;
                     break;
-                }
             }
             $bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => $h, 'p' => $p);
             $bararray['bcode'][$k++] = array('t' => 0, 'w' => 1, 'h' => 2, 'p' => 0);
