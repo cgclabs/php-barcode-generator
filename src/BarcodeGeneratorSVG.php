@@ -16,7 +16,7 @@ class BarcodeGeneratorSVG extends BarcodeGenerator
      * @return string SVG code.
      * @public
      */
-    public function getBarcode($code, $type, $widthFactor = 2, $totalHeight = 30, $color = 'black', $paddingHorz = 5, $paddingVert = 5, $footerSize = 20, $footerFontSize = 25)
+    public function getBarcode($code, $type, $widthFactor = 2, $totalHeight = 30, $color = 'black', $paddingHorz = 0, $paddingVert = 0, $footerSize = 0, $footerFontSize = 25)
     {
         $barcodeData = $this->getBarcodeData($code, $type);
 
@@ -40,9 +40,11 @@ class BarcodeGeneratorSVG extends BarcodeGenerator
             }
             $positionHorizontal += $barWidth;
         }
-
-        $footer = '<text style="font-size:'.$footerFontSize.'px;" text-anchor="middle" x="'.(($positionHorizontal + $paddingHorz)/2).'" y="'.($totalHeight + $footerSize + $paddingVert).'">'.$code.'</text>';
-
+        if ($footerSize > 0) {
+            $footer = '<text style="font-size:'.$footerFontSize.'px;" text-anchor="middle" x="'.(($positionHorizontal + $paddingHorz)/2).'" y="'.($totalHeight + $footerSize + $paddingVert).'">'.$code.'</text>';
+        } else {
+            $footer = '';
+        }
         $svg .= "\t" . $footer . '</g>' . "\n";
         $svg .= '</svg>' . "\n";
 
